@@ -12,10 +12,9 @@ pub fn decode_hex(hex_str: &str) -> Result<Vec<u8>, String> {
 pub fn to_big_endian(bytes: &[u8]) -> Vec<u8> {
     // TODO: Reverse the byte order of input slice and return as Vec<u8>
 
-   let mut reversed = bytes.to_vec(); // Copy the slice into a Vec<u8>
-    reversed.reverse();                // Reverse the Vec in-place
-    reversed 
-    
+    let mut reversed = bytes.to_vec(); // Copy the slice into a Vec<u8>
+    reversed.reverse(); // Reverse the Vec in-place
+    reversed
 }
 
 pub fn bytes_to_hex(bytes: &[u8]) -> String {
@@ -31,12 +30,14 @@ pub fn hex_to_bytes(hex: &str) -> Result<Vec<u8>, hex::FromHexError> {
 pub fn swap_endian_u32(num: u32) -> [u8; 4] {
     // TODO: Implement little-endian byte swap for u32
     num.to_le_bytes()
-
 }
 
 pub fn parse_satoshis(input: &str) -> Result<u64, String> {
     // TODO: Parse input string to u64, return error string if invalid
-    input.trim().parse::<u64>().map_err(|_| "Invalid satoshi amount".to_string())
+    input
+        .trim()
+        .parse::<u64>()
+        .map_err(|_| "Invalid satoshi amount".to_string())
 }
 
 pub enum ScriptType {
@@ -47,7 +48,7 @@ pub enum ScriptType {
 
 pub fn classify_script(script: &[u8]) -> ScriptType {
     // TODO: Match script pattern and return corresponding ScriptType
-    
+
     if script.starts_with(&[0x76, 0xa9, 0x14]) {
         return ScriptType::P2PKH;
     }
@@ -66,13 +67,13 @@ pub fn classify_script(script: &[u8]) -> ScriptType {
 pub struct Outpoint(pub String, pub u32);
 
 pub fn read_pushdata(script: &[u8]) -> &[u8] {
-// TODO: Return the pushdata portion of the script slice (assumes pushdata starts at index 2)
+    // TODO: Return the pushdata portion of the script slice (assumes pushdata starts at index 2)
     let len = script[1] as usize;
 
     if script.len() >= 2 + len {
-       return &script[2..len+2];
+        &script[2..len + 2]
     } else {
-        return &[];
+        &[]
     }
 }
 
@@ -100,8 +101,6 @@ pub fn move_txid(txid: String) -> String {
     // TODO: Return formatted string including the txid for display or logging
     format!("txid: {}", txid)
 }
-    
-
 
 // TODO: Add necessary derive traits
 
@@ -119,13 +118,10 @@ impl Opcode {
         match byte {
             0x76 => Ok(Opcode::OpDup),
             0xac => Ok(Opcode::OpChecksig),
-             _ => Err(format!("Invalid opcode: 0x{:02x}", byte)),
+            _ => Err(format!("Invalid opcode: 0x{:02x}", byte)),
         }
-    
     }
-
-    }
-
+}
 
 // TODO: Add necessary derive traits
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -136,7 +132,6 @@ pub struct UTXO {
 }
 
 pub fn consume_utxo(utxo: UTXO) -> UTXO {
-    
     println!(
         "Consuming UTXO: txid = {:x?}, vout = {}, value = {} sats",
         utxo.txid, utxo.vout, utxo.value
@@ -144,5 +139,3 @@ pub fn consume_utxo(utxo: UTXO) -> UTXO {
 
     utxo
 }
-
-
